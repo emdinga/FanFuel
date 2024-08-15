@@ -1,50 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanFuel - Live Streams</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <!-- Header and Navigation -->
-    <header class="header">
-        <h1>FanFuel</h1>
-        <nav>
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('profile') }}">Profile</a>
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('start_stream') }}">Start Stream</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('signup') }}">Sign Up</a>
-            {% endif %}
-        </nav>
-    </header>
+{% extends "layout.html" %}
 
-    <!-- Main Content: Live Streams -->
-    <main>
-        <h2>Live Streams</h2>
-        <div class="streams-container">
-            {% for stream in streams %}
-                <div class="stream-card">
-                    <a href="{{ url_for('watch_stream', stream_id=stream.id) }}">
-                        <img src="{{ url_for('static', filename='thumbnails/' + stream.thumbnail) }}" alt="{{ stream.title }}">
-                        <h3>{{ stream.title }}</h3>
-                        <p>by {{ stream.streamer.username }}</p>
-                        <p>{{ stream.viewers_count }} viewers</p>
-                    </a>
-                </div>
-            {% else %}
-                <p>No live streams currently. Check back later!</p>
-            {% endfor %}
+{% block title %}
+FanFuel - Live Streams
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h2>Unleash Your Creativity</h2>
+        <p>Stream live performances, connect with fans, and explore creative content across the globe.</p>
+        <div class="hero-cta">
+            <input type="text" placeholder="Search for creators..." class="search-bar">
+            <button class="explore-btn">Explore Creators</button>
         </div>
-    </main>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 FanFuel. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+<!-- Main Content: Live Streams -->
+<main>
+    <h2>Live Streams</h2>
+    <div class="streams-container">
+        {% for stream in streams %}
+        <div class="stream-card">
+            <a href="{{ url_for('watch_stream', stream_id=stream.id) }}">
+                <img src="{{ url_for('static', filename='thumbnails/' + stream.thumbnail) }}" alt="{{ stream.title }}">
+                <h3>{{ stream.title }}</h3>
+                <p>by {{ stream.streamer.username }}</p>
+                <p>{{ stream.viewers_count }} viewers</p>
+            </a>
+        </div>
+        {% else %}
+        <p>No live streams currently. Check back later!</p>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

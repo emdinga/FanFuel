@@ -2,14 +2,21 @@
 """ Flask application for live streams"""
 
 
-from models import Stream
+from models import Stream, db
 from flask import render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
+
+"""SQLite DB configuration"""
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fanfuel.db'
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+"""Initialize the database"""
+db.init_app(app)
+migrate = Migrate(app, db)
 
 
 

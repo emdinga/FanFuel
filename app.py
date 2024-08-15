@@ -19,3 +19,7 @@ def watch_stream(stream_id):
     """display live streams"""
     stream = Stream.query.get_or_404(stream_id)
     return render_template('watch_stream.html', stream=stream)
+
+
+if __name__ == '__main__':
+    app.run()

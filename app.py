@@ -25,13 +25,10 @@ def home():
         streams = Stream.query.filter_by(is_live=True).all()
     except OperationalError:
         # Handle the case where the table does not exist
-        # Log the error or provide a default message
-        return "Database error: Stream table not found.", 500
+        # Render the home page with a default message
+        return render_template('home.html', streams=[])
 
-    if not streams:
-        # Handle the case where no streams are found
-        return render_template('home_empty.html')
-
+    # Render the home page with streams or an empty list
     return render_template('home.html', streams=streams)
 
 @app.route('/watch/<int:stream_id>')

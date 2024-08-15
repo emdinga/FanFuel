@@ -1,2 +1,10 @@
-flask
-gunicorn
+gunicorn==20.1.0
+Werkzeug==2.1.1
+Flask==2.1.0
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.22
+Flask-Migrate
+Flask-Mail
+Flask_login
+itsdangerous
+Pillow

@@ -4,8 +4,13 @@
 
 from models import Stream
 from flask import render_template, Flask
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fanfuel.db'
+db = SQLAlchemy(app)
+
 
 
 @app.route('/')

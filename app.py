@@ -5,6 +5,8 @@ from models import Stream, db
 from flask import render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy.exc import OperationalError
+
 
 app = Flask(__name__)
 
@@ -19,7 +21,17 @@ migrate = Migrate(app, db)
 @app.route('/')
 def home():
     """ Query for active streams """
-    streams = Stream.query.filter_by(is_live=True).all()
+    try:
+        streams = Stream.query.filter_by(is_live=True).all()
+    except OperationalError:
+        # Handle the case where the table does not exist
+        # Log the error or provide a default message
+        return "Database error: Stream table not found.", 500
+
+    if not streams:
+        # Handle the case where no streams are found
+        return render_template('home_empty.html')
+
     return render_template('home.html', streams=streams)
 
 @app.route('/watch/<int:stream_id>')

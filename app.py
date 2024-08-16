@@ -52,17 +52,19 @@ def start_stream():
 
     return render_template('start_stream.html')
 
-# Route for logging out
+
 @app.route('/logout')
 @login_required
 def logout():
+    """Route for logging out"""
     logout_user()
     flash('You have been logged out!')
     return redirect(url_for('home'))
 
-# Route for logging in
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Route for logging in"""
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -75,9 +77,10 @@ def login():
         return redirect(url_for('login'))
     return render_template('login.html')
 
-# Route for signing up
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """Route for signing up"""
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
@@ -96,6 +99,7 @@ def signup():
         return redirect(url_for('login'))
 
     return render_template('signup.html')
+
 @app.route('/')
 def home():
     # Query for live streams

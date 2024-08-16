@@ -14,6 +14,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fanfuel.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+"""Create tables if they don't exist"""
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 """ Initialize the database """
 db.init_app(app)
 migrate = Migrate(app, db)

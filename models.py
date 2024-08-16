@@ -11,3 +11,15 @@ class Stream(db.Model):
     is_live = db.Column(db.Boolean, default=False)
     viewers_count = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    bio = db.Column(db.String(500), nullable=True)
+    picture = db.Column(db.String(200), nullable=True, default='default.jpg')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(10), nullable=False, default='offline')
+    streams = db.relationship('Stream', backref='streamer', lazy=True)
+    def __repr__(self):
+        return f'<Profile {self.username}>'

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Flask application for live streams """
 
-from models import Stream, db
+from models import Stream, db, Profile
 from flask import render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -20,16 +20,16 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def home():
-    """ Query for active streams """
-    try:
-        streams = Stream.query.filter_by(is_live=True).all()
-    except OperationalError:
-        # Handle the case where the table does not exist
-        # Render the home page with a default message
-        return render_template('home.html', streams=[])
+    # Query for live streams
+    streams = Stream.query.filter_by(is_live=True).all()
+    
+    # Query for profiles if no streams are live
+    if not streams:
+        profiles = Profile.query.all()  # Adjust the query as needed to get profiles
+    else:
+        profiles = []
 
-    # Render the home page with streams or an empty list
-    return render_template('home.html', streams=streams)
+    return render_template('home.html', streams=streams, profiles=profiles)
 
 @app.route('/watch/<int:stream_id>')
 def watch_stream(stream_id):

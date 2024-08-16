@@ -21,18 +21,32 @@ FanFuel - Live Streams
 <main>
     <h2>Live Streams</h2>
     <div class="streams-container">
-        {% for stream in streams %}
-        <div class="stream-card">
-            <a href="{{ url_for('watch_stream', stream_id=stream.id) }}">
-                <img src="{{ url_for('static', filename='thumbnails/' + stream.thumbnail) }}" alt="{{ stream.title }}">
-                <h3>{{ stream.title }}</h3>
-                <p>by {{ stream.streamer.username }}</p>
-                <p>{{ stream.viewers_count }} viewers</p>
-            </a>
-        </div>
+        {% if streams %}
+            {% for stream in streams %}
+            <div class="stream-card">
+                <a href="{{ url_for('watch_stream', stream_id=stream.id) }}">
+                    <img src="{{ url_for('static', filename='thumbnails/' + stream.thumbnail) }}" alt="{{ stream.title }}">
+                    <h3>{{ stream.title }}</h3>
+                    <p>by {{ stream.streamer.username }}</p>
+                    <p>{{ stream.viewers_count }} viewers</p>
+                </a>
+            </div>
+            {% endfor %}
         {% else %}
-        <p>No live streams currently. Check back later!</p>
-        {% endfor %}
+            <p>No live streams currently. Check back later!</p>
+            <h2>Explore Creators</h2>
+            <div class="profiles-container">
+                {% for profile in profiles %}
+                <div class="profile-card">
+                    <img src="{{ url_for('static', filename='profile_pics/' + profile.picture) }}" alt="{{ profile.username }}">
+                    <h3>{{ profile.username }}</h3>
+                    <p>Status: {{ profile.status }}</p>
+                </div>
+                {% else %}
+                    <p>No profiles to show. Create a profile and start streaming!</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 </main>
 {% endblock %}

@@ -5,8 +5,6 @@ from models import Stream, db, Profile
 from flask import render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from sqlalchemy.exc import OperationalError
-
 
 app = Flask(__name__)
 
@@ -14,14 +12,15 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fanfuel.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-"""Create tables if they don't exist"""
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-""" Initialize the database """
+"""Initialize the database"""
 db.init_app(app)
 migrate = Migrate(app, db)
+
+@app.before_first_request
+def create_tables():
+    """Create tables if they don't exist"""
+    with app.app_context():
+        db.create_all()
 
 @app.route('/')
 def home():
@@ -30,7 +29,7 @@ def home():
     
     # Query for profiles if no streams are live
     if not streams:
-        profiles = Profile.query.all()  # Adjust the query as needed to get profiles
+        profiles = Profile.query.all()
     else:
         profiles = []
 
